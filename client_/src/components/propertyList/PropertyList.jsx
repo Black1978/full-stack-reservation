@@ -20,7 +20,7 @@ const PropertyList = () => {
                 <>
                     {data &&
                         images.map((v, i) => (
-                            <div className='pListItem'>
+                            <div className='pListItem' key={i}>
                                 <img src={v} alt='' className='pListImg' />
                                 <div className='pListTitles'>
                                     <h1>{data[i]?.type}</h1>
