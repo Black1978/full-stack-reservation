@@ -83,12 +83,16 @@
 }
 
 .siDetailTexts{
+  height: 100%;
   text-align: right;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
 }
-
+.siDetailTextsWrapper {
+  display: flex;
+  flex-direction: column;
+}
 .siPrice{
   font-size: 24px;
 }
