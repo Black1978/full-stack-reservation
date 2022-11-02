@@ -28,7 +28,7 @@ const SearchItem = ({ props }) => {
                         <span className='siPrice'>${props.cheapestPrice}</span>
                         <span className='siTaxOp'>Includes taxes and fees</span>
                     </div>
-                    <Link to={`/hotels/${props._id}`}>
+                    <Link to={`/hotels/find/${props._id}`}>
                         <button className='siCheckButton'>See availability</button>
                     </Link>
                 </div>
