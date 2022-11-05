@@ -14,6 +14,8 @@ import 'react-date-range/dist/styles.css' // main css file
 import 'react-date-range/dist/theme/default.css' // theme css file
 import { format } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { SearchContext } from '../../context/SearchContext'
 
 const Header = ({ type }) => {
     const [destination, setDestination] = useState('')
@@ -42,9 +44,11 @@ const Header = ({ type }) => {
             }
         })
     }
+    const { dispatch } = useContext(SearchContext)
 
     const handleSearch = () => {
         navigate('/hotels', { state: { destination, date, options } })
+        dispatch({ type: 'NEW_SEARCH', payload: { destination, dates: date, options } })
     }
 
     return (

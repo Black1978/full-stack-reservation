@@ -24,7 +24,6 @@ const List = () => {
     const handleSearch = () => {
         reFetch()
     }
-
     return (
         <div>
             <Navbar />

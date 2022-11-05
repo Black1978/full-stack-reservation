@@ -13,6 +13,8 @@ import {
 import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
+import { useContext } from 'react'
+import { SearchContext } from '../../context/SearchContext'
 
 const Hotel = () => {
     const [slideNumber, setSlideNumber] = useState(0)
@@ -37,6 +39,18 @@ const Hotel = () => {
 
         setSlideNumber(newSlideNumber)
     }
+
+    const { dates, options } = useContext(SearchContext)
+    console.log(dates, options)
+
+    const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
+
+    function dayDifference(date1, date2) {
+        const timeDiff = Math.abs(date2.getTime() - date1.getTime())
+        const daysDiff = Math.ceil(timeDiff / MILLISECONDS_PER_DAY)
+        return daysDiff
+    }
+    const days = dayDifference(dates[0].startDate, dates[0].endDate)
 
     return (
         <div>
@@ -106,7 +120,7 @@ const Hotel = () => {
                                     excellent location score of 9.8!
                                 </span>
                                 <h2>
-                                    <b>$945</b> (9 nights)
+                                    <b>${days * data.cheapestPrice * options.room}</b> ({days} nights)
                                 </h2>
                                 <button>Reserve or Book Now!</button>
                             </div>
