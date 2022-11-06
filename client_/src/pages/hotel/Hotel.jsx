@@ -11,16 +11,19 @@ import {
     faLocationDot,
 } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch'
 import { useContext } from 'react'
 import { SearchContext } from '../../context/SearchContext'
+import { AuthContext } from '../../context/AuthContext'
 
 const Hotel = () => {
     const [slideNumber, setSlideNumber] = useState(0)
     const [open, setOpen] = useState(false)
     const location = useLocation()
+    const navigate = useNavigate()
     const idNumber = location.pathname.split('/')[3]
+    const { user } = useContext(AuthContext)
     const { data, loading, error, reFetch } = useFetch(`/hotels/find/${idNumber}`)
 
     const handleOpen = (i) => {
@@ -41,7 +44,12 @@ const Hotel = () => {
     }
 
     const { dates, options } = useContext(SearchContext)
-    console.log(dates, options)
+    const handleReserve = () => {
+        if (user) {
+        } else {
+            navigate('/login')
+        }
+    }
 
     const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24
 
@@ -83,7 +91,9 @@ const Hotel = () => {
                         </div>
                     )}
                     <div className='hotelWrapper'>
-                        <button className='bookNow'>Reserve or Book Now!</button>
+                        <button className='bookNow' onClick={handleReserve}>
+                            Reserve or Book Now!
+                        </button>
                         <h1 className='hotelTitle'>{data.name}</h1>
                         <div className='hotelAddress'>
                             <FontAwesomeIcon icon={faLocationDot} />
@@ -120,9 +130,10 @@ const Hotel = () => {
                                     excellent location score of 9.8!
                                 </span>
                                 <h2>
-                                    <b>${days * data.cheapestPrice * options.room}</b> ({days} nights)
+                                    <b>${days * data.cheapestPrice * options.room}</b> ({days}{' '}
+                                    nights)
                                 </h2>
-                                <button>Reserve or Book Now!</button>
+                                <button onClick={handleReserve}>Reserve or Book Now!</button>
                             </div>
                         </div>
                     </div>
