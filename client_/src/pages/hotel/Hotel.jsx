@@ -16,14 +16,17 @@ import useFetch from '../../hooks/useFetch'
 import { useContext } from 'react'
 import { SearchContext } from '../../context/SearchContext'
 import { AuthContext } from '../../context/AuthContext'
+import Reserve from '../../components/reserve/Reserve'
 
 const Hotel = () => {
     const [slideNumber, setSlideNumber] = useState(0)
     const [open, setOpen] = useState(false)
+    const [openBooking, setOpenBooking] = useState(false)
     const location = useLocation()
     const navigate = useNavigate()
     const idNumber = location.pathname.split('/')[3]
     const { user } = useContext(AuthContext)
+    const { dates, options } = useContext(SearchContext)
     const { data, loading, error, reFetch } = useFetch(`/hotels/find/${idNumber}`)
 
     const handleOpen = (i) => {
@@ -43,9 +46,9 @@ const Hotel = () => {
         setSlideNumber(newSlideNumber)
     }
 
-    const { dates, options } = useContext(SearchContext)
     const handleReserve = () => {
         if (user) {
+            setOpenBooking(true)
         } else {
             navigate('/login')
         }
@@ -56,7 +59,7 @@ const Hotel = () => {
     function dayDifference(date1, date2) {
         const timeDiff = Math.abs(date2.getTime() - date1.getTime())
         const daysDiff = Math.ceil(timeDiff / MILLISECONDS_PER_DAY)
-        return daysDiff
+        return daysDiff + 1
     }
     const days = dayDifference(dates[0].startDate, dates[0].endDate)
 
@@ -136,6 +139,7 @@ const Hotel = () => {
                                 <button onClick={handleReserve}>Reserve or Book Now!</button>
                             </div>
                         </div>
+                        {openBooking && <Reserve setOpen={setOpenBooking} hotelId={idNumber} />}
                     </div>
                     <MailList />
                     <Footer />
